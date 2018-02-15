@@ -2,6 +2,7 @@ package io.github.skepter.poemcreator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,26 +13,16 @@ import java.util.List;
  */
 public class PoemBuilder {
 
-	//TODO Possibility to allow this class to create PoemStrings by
-	//breaking up strings which are too long?
-	
 	public final static int STR_LENGTH = 29;
 	//2 for borders, 2 for left padding, 2 for right padding
 	public final static int TXT_LENGTH = STR_LENGTH - 6;
 	private List<String> builder;
 	
+	private boolean hasTitle;
+	
 	public PoemBuilder() {
 		builder = new ArrayList<>();
-		//EACH string cannot be longer than 29 characters!
-		//*                           *
-		//generateNewLine();
-//		addNewLine();
-//		try {
-//			generateTitle("Test Poem");
-//		} catch (PoemStringLengthException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println(builder);
+		hasTitle = false;
 	}
 	
 	public void addNewLine() {
@@ -57,14 +48,37 @@ public class PoemBuilder {
 	 */
 	public void addParagraph(String str) {
 		
+		List<String> words = Arrays.asList(str.split(" "));
+		Iterator<String> it = words.iterator();
+		while(it.hasNext()) {
+			String nextWord = it.next();
+		}
+		
+		addNewLine();
+	}
+	
+	public void generateAuthor(String author) {
+		//TODO Complete this method
+		if(hasTitle) {
+			//insert after title
+		} else {
+			//insert at front
+		}
+		//Generates the author
 	}
 	
 	/**
 	 * Creates a title. Always adds to beginning of builder
-	 * @throws PoemStringLengthException 
+	 * @param title
+	 * @param show - Whether the title should be explicitly shown
+	 * @throws PoemStringLengthException
 	 */
-	public void generateTitle(String title) throws PoemStringLengthException {
-		
+	public void generateTitle(String title, boolean show) throws PoemStringLengthException {
+		//Prevent generating the title multiple times
+		if(hasTitle) {
+			return;
+		}
+		hasTitle = true;
 		//Title block
 		String[] titleBlock = new String[3];
 		
