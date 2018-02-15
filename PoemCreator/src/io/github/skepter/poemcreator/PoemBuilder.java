@@ -4,8 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class for building a poem. Simple adds text to the poem.
+ * Creates a simple single column poem a line at a time.
+ * 
+ * @author Jorel
+ */
 public class PoemBuilder {
 
+	//TODO Possibility to allow this class to create PoemStrings by
+	//breaking up strings which are too long?
+	
 	private final static int STR_LENGTH = 29;
 	//2 for borders, 2 for left padding, 2 for right padding
 	private final static int TXT_LENGTH = STR_LENGTH - 6;
@@ -64,6 +73,10 @@ public class PoemBuilder {
 		
 		
 		builder.addAll(0, Arrays.asList(titleBlock));
+	}
+	
+	public List<String> getBuilder() {
+		return builder;
 	}
 	
 	
