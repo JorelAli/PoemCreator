@@ -13,6 +13,9 @@ public class PoemCreator {
 		PoemBuilder builder = new PoemBuilder();
 		try {
 			builder.generateTitle("title");
+			builder.addLine(new PoemString("this is simple"));
+			builder.build();
+			builder.printBuilder();
 		} catch (PoemStringLengthException e) {
 			e.printStackTrace();
 		}

@@ -47,6 +47,18 @@ public class PoemBuilder {
 		builder.add(newline.toString());
 	}
 	
+	public void addLine(PoemString string) {
+		builder.add(string.toString());
+	}
+ 	
+	/**
+	 * Generates a tonne of PoemStrings and adds it to the builder. Adds a new line at the end.
+	 * @param str
+	 */
+	public void addParagraph(String str) {
+		
+	}
+	
 	/**
 	 * Creates a title. Always adds to beginning of builder
 	 * @throws PoemStringLengthException 
@@ -78,5 +90,17 @@ public class PoemBuilder {
 	
 	public List<String> getBuilder() {
 		return builder;
+	}
+	
+	public void build() {
+		StringBuilder strBuilder = new StringBuilder("");
+		for(int i = 0; i < STR_LENGTH; i++) {
+			strBuilder.append("*");
+		}
+		builder.add(strBuilder.toString());
+	}
+	
+	public void printBuilder() {
+		builder.forEach(System.out::println);
 	}
 }
