@@ -15,9 +15,9 @@ public class PoemBuilder {
 	//TODO Possibility to allow this class to create PoemStrings by
 	//breaking up strings which are too long?
 	
-	private final static int STR_LENGTH = 29;
+	public final static int STR_LENGTH = 29;
 	//2 for borders, 2 for left padding, 2 for right padding
-	private final static int TXT_LENGTH = STR_LENGTH - 6;
+	public final static int TXT_LENGTH = STR_LENGTH - 6;
 	private List<String> builder;
 	
 	public PoemBuilder() {
@@ -25,13 +25,13 @@ public class PoemBuilder {
 		//EACH string cannot be longer than 29 characters!
 		//*                           *
 		//generateNewLine();
-		addNewLine();
-		try {
-			generateTitle("Test Poem");
-		} catch (PoemStringLengthException e) {
-			e.printStackTrace();
-		}
-		System.out.println(builder);
+//		addNewLine();
+//		try {
+//			generateTitle("Test Poem");
+//		} catch (PoemStringLengthException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println(builder);
 	}
 	
 	public void addNewLine() {
@@ -69,7 +69,8 @@ public class PoemBuilder {
 		
 		//Title itself		
 		PoemString poemString = new PoemString(title);
-		
+		poemString.center();
+		titleBlock[1] = poemString.toString();
 		
 		
 		builder.addAll(0, Arrays.asList(titleBlock));
@@ -77,47 +78,5 @@ public class PoemBuilder {
 	
 	public List<String> getBuilder() {
 		return builder;
-	}
-	
-	
-	private class PoemStringLengthException extends Exception {
-		
-		public PoemStringLengthException() {
-			super("String cannot be longer than " + TXT_LENGTH + " characters!");
-		}		
-	}
-	
-	private class PoemString {
-		
-		StringBuilder strBuilder;
-		
-		public PoemString() {
-			strBuilder = new StringBuilder();
-		}
-		
-		public PoemString(String inputStr) throws PoemStringLengthException {
-			if(inputStr.length() > TXT_LENGTH) {
-				throw new PoemStringLengthException();
-			}
-			strBuilder = new StringBuilder(inputStr);
-		}
-		
-		public void appendString(String string) throws PoemStringLengthException {
-			if(strBuilder.length() + string.length() > TXT_LENGTH) {
-				throw new PoemStringLengthException();
-			} else {
-				strBuilder.append(string);
-			}
-		}
-		
-		@Override
-		public String toString() {
-			for(int i = strBuilder.length(); i < TXT_LENGTH; i++) {
-				strBuilder.append(" ");
-			}
-			strBuilder.insert(0, "*  ");
-			strBuilder.append("  *");
-			return strBuilder.toString();
-		}
 	}
 }

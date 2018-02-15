@@ -10,7 +10,14 @@ package io.github.skepter.poemcreator;
 public class PoemCreator {
 
 	public static void main(String[] a) {
-		new PoemBuilder();
+		PoemBuilder builder = new PoemBuilder();
+		try {
+			builder.generateTitle("title");
+		} catch (PoemStringLengthException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	public PoemCreator() {
