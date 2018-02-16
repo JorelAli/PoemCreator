@@ -16,16 +16,25 @@ public class PoemCreator {
 		//Testing the raw PoemBuilder class
 		PoemBuilder builder = new PoemBuilder();
 		try {
-			builder.generateTitle("title", false);
-			// builder.addLine(new PoemString("this is simple"));
+			//Tests title generation
+			builder.generateTitle("title");
 
+			//Adds a basic paragraph
 			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
 					+ "twenty nine characters just to test the functionality of my paragraph function");
 
+			//Tests insane long word
+			try {
+				builder.addParagraph("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			} catch (PoemStringLengthException e) {
+				//Ignore, this is just a test
+				System.out.println("Long word exception caught\n");
+			}
 			
+			//Test author generation
 			builder.generateAuthor("Jorel Ali");
 			builder.build();
-			builder.printBuilder();
+			builder.printResultingColumn();
 		} catch (PoemStringLengthException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +54,8 @@ public class PoemCreator {
 		PoemBuilder builder = new PoemBuilder();
 			// Title
 			try {
-				builder.generateTitle(title, showTitle);
+				//showTitle is dealt with in this class
+				builder.generateTitle(title);
 			} catch (PoemStringLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

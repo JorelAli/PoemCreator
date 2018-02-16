@@ -19,10 +19,19 @@ public class PoemBuilder {
 	private List<String> builder;
 	
 	private boolean hasTitle;
+	private boolean hasBeenBuilt;
+	
+	/*
+	 * Once a poem has been created, it doesn't need to be rebuilt or
+	 * re-compiled (to its resulting form).
+	 */
+	private String cachedResult;
 	
 	public PoemBuilder() {
 		builder = new ArrayList<>();
 		hasTitle = false;
+		hasBeenBuilt = false;
+		cachedResult = null;
 	}
 	
 	public void addNewLine() {
@@ -126,10 +135,9 @@ public class PoemBuilder {
 	/**
 	 * Creates a title. Always adds to beginning of builder
 	 * @param title
-	 * @param show - Whether the title should be explicitly shown
 	 * @throws PoemStringLengthException
 	 */
-	public void generateTitle(String title, boolean show) throws PoemStringLengthException {
+	public void generateTitle(String title) throws PoemStringLengthException {
 		//Prevent generating the title multiple times
 		if(hasTitle) {
 			return;
@@ -162,15 +170,37 @@ public class PoemBuilder {
 		return builder;
 	}
 	
+	/**
+	 * Adds finishing line to poem
+	 */
 	public void build() {
+		if(hasBeenBuilt) {
+			//Has already been built, cannot rebuild
+			System.out.println("You cannot rebuild a poem"); //TODO exception?
+			return;
+		}
+		hasBeenBuilt = true;
 		StringBuilder strBuilder = new StringBuilder("");
 		for(int i = 0; i < STR_LENGTH; i++) {
 			strBuilder.append("*");
 		}
 		builder.add(strBuilder.toString());
+		cachedResult = getResultingColumn();
 	}
 	
-	public void printBuilder() {
-		builder.forEach(System.out::println);
+	public void printResultingColumn() {
+		System.out.println(getResultingColumn());
+	}
+	
+	public String getResultingColumn() {
+		if(cachedResult == null) {
+			StringBuilder strBuilder = new StringBuilder();
+			builder.forEach(str -> {
+				strBuilder.append(str + "\n");
+			});
+			return strBuilder.toString();
+		} else {
+			return cachedResult;
+		}
 	}
 }
