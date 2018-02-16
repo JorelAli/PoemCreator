@@ -9,6 +9,8 @@ package io.github.skepter.poemcreator;
  */
 public class PoemCreator {
 
+	//TODO GUI?
+	
 	public static void main(String[] a) {
 		PoemBuilder builder = new PoemBuilder();
 		try {
@@ -18,6 +20,7 @@ public class PoemCreator {
 			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
 					+ "twenty nine characters just to test the functionality of my paragraph function");
 
+			builder.generateAuthor("Jorel Ali");
 			builder.build();
 			builder.printBuilder();
 		} catch (PoemStringLengthException e) {

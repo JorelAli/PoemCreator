@@ -26,6 +26,10 @@ public class PoemBuilder {
 	}
 	
 	public void addNewLine() {
+		addNewLine(builder.size());
+	}
+	
+	public void addNewLine(int index) {
 		PoemString newline = new PoemString();
 		for(int i = 0; i < TXT_LENGTH; i++) {
 			try {
@@ -35,7 +39,7 @@ public class PoemBuilder {
 				e.printStackTrace();
 			}
 		}
-		builder.add(newline.toString());
+		builder.add(index, newline.toString());
 	}
 	
 	public void addLine(PoemString string) {
@@ -97,14 +101,28 @@ public class PoemBuilder {
 		addNewLine();
 	}
 	
+	/**
+	 * Author generator. Designed to be generated at the top of the poem
+	 * @param author
+	 */
 	public void generateAuthor(String author) {
-		//TODO Complete this method
-		if(hasTitle) {
-			//insert after title
-		} else {
-			//insert at front
+		PoemString authorStr = null;
+		try {
+			authorStr = new PoemString("Created by " + author);
+			authorStr.center();
+		} catch (PoemStringLengthException e) {
+			e.printStackTrace();
 		}
-		//Generates the author
+
+		if(hasTitle) {
+			addNewLine(3);
+			builder.add(4, authorStr.toString());
+			addNewLine(5);
+		} else {
+			addNewLine(0);
+			builder.add(1, authorStr.toString());
+			addNewLine(2);
+		}
 	}
 	
 	/**
