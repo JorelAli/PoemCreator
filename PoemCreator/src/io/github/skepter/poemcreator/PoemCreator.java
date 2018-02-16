@@ -58,68 +58,66 @@ public class PoemCreator {
 	 */
 	public PoemCreator(String title, boolean showTitle, String author, String body, String[] secret) {
 		PoemBuilder builder = new PoemBuilder();
-			// Title
+		// Title
+		try {
+			// showTitle is dealt with in this class
+			builder.generateTitle(title);
+		} catch (PoemStringLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Author
+		if (author != null) {
 			try {
-				//showTitle is dealt with in this class
-				builder.generateTitle(title);
+				builder.generateAuthor(author);
 			} catch (PoemStringLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 
-			// Author
-			if (author != null) {
+		// Implementing the body into the poem
+		String[] paragraphs = body.split("\n");
+		for (String str : paragraphs) {
+			try {
+				builder.addParagraph(str);
+			} catch (PoemStringLengthException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		// Sanity check for secret embedding
+		int lastIndex = 0;
+		for (String str : secret) {
+			if (body.indexOf(str, lastIndex) == -1) {
 				try {
-					builder.generateAuthor(author);
-				} catch (PoemStringLengthException e) {
+					throw new SecretSanityException(str, lastIndex);
+				} catch (SecretSanityException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} else {
+				lastIndex = body.indexOf(str, lastIndex);
 			}
+		}
 
-			//Implementing the body into the poem
-			String[] paragraphs = body.split("\n");
-			for (String str : paragraphs) {
-				try {
-					builder.addParagraph(str);
-				} catch (PoemStringLengthException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+		// Poem has been created, all checks dealt with.
+		builder.build();
 
-			//Sanity check for secret
-			int lastIndex = 0;
-			for(String str : secret) {
-				if(body.indexOf(str, lastIndex) == -1) {
-					try {
-						throw new SecretSanityException(str, lastIndex);
-					} catch (SecretSanityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					lastIndex = body.indexOf(str, lastIndex);
-				}
-			}
-			
-			//Building and printing resulting column (for now)
-			builder.build();
-			builder.printResultingColumn();
-		
-		// Requirements for a poem:
+		String leftColumn = builder.getResultingColumn();
+		String rightColumn = builder.getResultingColumn(); 
+
 		/*
-		 * Title
+		 * Basic idea of secret embedding:
+		 * Add a single space before each secret in the left column.
+		 * Add a single space after each secret in the right column.
 		 * 
-		 * TitleShown (optional - depends if title should be shown)
-		 * 
-		 * Author (optional)
-		 * 
-		 * String containing "body" of the text
-		 * 
-		 * String[] or List<String> containing the secret
+		 * Deal with "dual secrets" ('the world') later.
+		 * When adding a space to each column, remove a space from * at the end of line.
 		 */
-
+		
 	}
 
 }
