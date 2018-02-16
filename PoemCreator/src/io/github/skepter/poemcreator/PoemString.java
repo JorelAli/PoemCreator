@@ -10,7 +10,7 @@ class PoemString {
 
 	public PoemString(String inputStr) throws PoemStringLengthException {
 		if (inputStr.length() > PoemBuilder.TXT_LENGTH) {
-			throw new PoemStringLengthException();
+			throw new PoemStringLengthException(inputStr);
 		}
 		strBuilder = new StringBuilder(inputStr);
 	}
@@ -26,7 +26,7 @@ class PoemString {
 	 */
 	public void appendString(String string) throws PoemStringLengthException {
 		if (strBuilder.length() + string.length() > PoemBuilder.TXT_LENGTH) {
-			throw new PoemStringLengthException();
+			throw new PoemStringLengthException(string);
 		} else {
 			strBuilder.append(string);
 		}

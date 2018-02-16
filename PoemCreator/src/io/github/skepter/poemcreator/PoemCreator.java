@@ -22,6 +22,7 @@ public class PoemCreator {
 			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
 					+ "twenty nine characters just to test the functionality of my paragraph function");
 
+			
 			builder.generateAuthor("Jorel Ali");
 			builder.build();
 			builder.printBuilder();
@@ -42,23 +43,35 @@ public class PoemCreator {
 	 */
 	public PoemCreator(String title, boolean showTitle, String author, String body, String[] secret) {
 		PoemBuilder builder = new PoemBuilder();
-		try {
 			// Title
-			builder.generateTitle(title, showTitle);
+			try {
+				builder.generateTitle(title, showTitle);
+			} catch (PoemStringLengthException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// Author
 			if (author != null) {
-				builder.generateAuthor(author);
+				try {
+					builder.generateAuthor(author);
+				} catch (PoemStringLengthException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			String[] paragraphs = body.split("\n");
 			for (String str : paragraphs) {
-				builder.addParagraph(str);
+				try {
+					builder.addParagraph(str);
+				} catch (PoemStringLengthException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
-		} catch (PoemStringLengthException e) {
-			e.printStackTrace();
-		}
+		
 		// Requirements for a poem:
 		/*
 		 * Title

@@ -29,7 +29,7 @@ public class PoemBuilder {
 		addNewLine(builder.size());
 	}
 	
-	public void addNewLine(int index) {
+	private void addNewLine(int index) {
 		PoemString newline = new PoemString();
 		for(int i = 0; i < TXT_LENGTH; i++) {
 			try {
@@ -42,15 +42,16 @@ public class PoemBuilder {
 		builder.add(index, newline.toString());
 	}
 	
-	public void addLine(PoemString string) {
+	private void addLine(PoemString string) {
 		builder.add(string.toString());
 	}
  	
 	/**
 	 * Generates a tonne of PoemStrings and adds it to the builder. Adds a new line at the end.
 	 * @param str
+	 * @throws PoemStringLengthException 
 	 */
-	public void addParagraph(String str) {
+	public void addParagraph(String str) throws PoemStringLengthException {
 		
 		List<String> words = Arrays.asList(str.split(" "));
 		Iterator<String> it = words.iterator();
@@ -73,7 +74,7 @@ public class PoemBuilder {
 					 * a modified change for TXT_LENGTH, I'm just going to throw
 					 * this exception
 					 */
-					e.printStackTrace();
+					throw e;
 				}
 			} else {
 				try {
@@ -88,7 +89,7 @@ public class PoemBuilder {
 						currentPoemString.appendString(" ");
 					} catch (PoemStringLengthException e1) {
 						// See ~SPECIAL_CASE~ above
-						e1.printStackTrace();
+						throw e;
 					}
 				}
 			}
@@ -104,21 +105,18 @@ public class PoemBuilder {
 	/**
 	 * Author generator. Designed to be generated at the top of the poem
 	 * @param author
+	 * @throws PoemStringLengthException 
 	 */
-	public void generateAuthor(String author) {
-		PoemString authorStr = null;
-		try {
-			authorStr = new PoemString("Created by " + author);
-			authorStr.center();
-		} catch (PoemStringLengthException e) {
-			e.printStackTrace();
-		}
+	public void generateAuthor(String author) throws PoemStringLengthException {
+		PoemString authorStr = new PoemString("Created by " + author);
+		authorStr.center();
 
-		if(hasTitle) {
+		if (hasTitle) {
 			addNewLine(3);
 			builder.add(4, authorStr.toString());
 			addNewLine(5);
 		} else {
+			// This case shouldn't occur "in production"
 			addNewLine(0);
 			builder.add(1, authorStr.toString());
 			addNewLine(2);
