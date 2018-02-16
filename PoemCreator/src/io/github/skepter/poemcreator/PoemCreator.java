@@ -14,34 +14,40 @@ public class PoemCreator {
 	public static void main(String[] a) {
 		
 		//Testing the raw PoemBuilder class
-		PoemBuilder builder = new PoemBuilder();
-		try {
-			//Tests title generation
-			builder.generateTitle("title");
-
-			//Adds a basic paragraph
-			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
-					+ "twenty nine characters just to test the functionality of my paragraph function");
-
-			//Tests insane long word
-			try {
-				builder.addParagraph("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-			} catch (PoemStringLengthException e) {
-				//Ignore, this is just a test
-				System.out.println("Long word exception caught\n");
-			}
+//		PoemBuilder builder = new PoemBuilder();
+//		try {
+//			//Tests title generation
+//			builder.generateTitle("title");
+//
+//			//Adds a basic paragraph
+//			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
+//					+ "twenty nine characters just to test the functionality of my paragraph function");
+//
+//			//Tests insane long word
+//			try {
+//				builder.addParagraph("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+//			} catch (PoemStringLengthException e) {
+//				//Ignore, this is just a test
+//				System.out.println("Long word exception caught\n");
+//			}
+//			
+//			//Test author generation
+//			builder.generateAuthor("Jorel Ali");
+//			builder.build();
+//			builder.printResultingColumn();
+//		} catch (PoemStringLengthException e) {
+//			e.printStackTrace();
+//		}
+		
+		//Using the PoemCreator constructor
+		new PoemCreator("Title", false, "Jorel Ali", "This is an insanely super long abnormal string which has length of over "
+				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"has", "test"});
 			
-			//Test author generation
-			builder.generateAuthor("Jorel Ali");
-			builder.build();
-			builder.printResultingColumn();
-		} catch (PoemStringLengthException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	/**
+	 * Creates a poem. All sanity checks are produced during "production" (this
+	 * allows ease of determining errors when it "is compiled")
 	 * 
 	 * @param title
 	 * @param showTitle
@@ -71,6 +77,7 @@ public class PoemCreator {
 				}
 			}
 
+			//Implementing the body into the poem
 			String[] paragraphs = body.split("\n");
 			for (String str : paragraphs) {
 				try {
@@ -81,6 +88,24 @@ public class PoemCreator {
 				}
 			}
 
+			//Sanity check for secret
+			int lastIndex = 0;
+			for(String str : secret) {
+				if(body.indexOf(str, lastIndex) == -1) {
+					try {
+						throw new SecretSanityException(str, lastIndex);
+					} catch (SecretSanityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					lastIndex = body.indexOf(str, lastIndex);
+				}
+			}
+			
+			//Building and printing resulting column (for now)
+			builder.build();
+			builder.printResultingColumn();
 		
 		// Requirements for a poem:
 		/*
