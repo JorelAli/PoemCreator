@@ -15,6 +15,15 @@ class PoemString {
 		strBuilder = new StringBuilder(inputStr);
 	}
 
+	/**
+	 * Adds a string to the PoemString
+	 * 
+	 * @param string
+	 *            The string to add to PoemString
+	 * @throws PoemStringLengthException
+	 *             if a string CANNOT be added (doesn't add the string to
+	 *             PoemString)
+	 */
 	public void appendString(String string) throws PoemStringLengthException {
 		if (strBuilder.length() + string.length() > PoemBuilder.TXT_LENGTH) {
 			throw new PoemStringLengthException();
@@ -31,6 +40,10 @@ class PoemString {
 		for (int i = 0; i < spacesNeeded; i++) {
 			strBuilder.insert(0, " ");
 		}
+	}
+	
+	public boolean isEmpty() {
+		return strBuilder.length() == 0;
 	}
 
 	@Override

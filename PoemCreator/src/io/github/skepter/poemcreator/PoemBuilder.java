@@ -50,10 +50,47 @@ public class PoemBuilder {
 		
 		List<String> words = Arrays.asList(str.split(" "));
 		Iterator<String> it = words.iterator();
+		PoemString currentPoemString = new PoemString();
+		
+		//For each word in words
 		while(it.hasNext()) {
 			String nextWord = it.next();
+			//Add it to the currentPoemString as a "new string"
+			if(currentPoemString.isEmpty()) {
+				try {
+					currentPoemString.appendString(nextWord);
+				} catch(PoemStringLengthException e) {
+					/* ~SPECIAL_CASE~
+					 * If this case occurs, there's a word which cannot be fit
+					 * in a single PoemString. Ideally, this case should never
+					 * occur. Since we don't know how to deal with it yet (i.e.
+					 * I haven't decided on dealing with hyphenation or allowing
+					 * a modified change for TXT_LENGTH, I'm just going to throw
+					 * this exception
+					 */
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					currentPoemString.appendString(nextWord);
+				} catch(PoemStringLengthException e) {
+					//We're now full up, let's create a new PoemString and write
+					//to our "buffer" (list)
+					addLine(currentPoemString);
+					try {
+						currentPoemString = new PoemString(nextWord);
+					} catch (PoemStringLengthException e1) {
+						// See ~SPECIAL_CASE~ above
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
+
+		//Adds final poemString
+		addLine(currentPoemString);
 		
+		//Prints a new line :)
 		addNewLine();
 	}
 	
