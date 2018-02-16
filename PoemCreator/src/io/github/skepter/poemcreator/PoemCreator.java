@@ -12,6 +12,8 @@ public class PoemCreator {
 	//TODO GUI?
 	
 	public static void main(String[] a) {
+		
+		//Testing the raw PoemBuilder class
 		PoemBuilder builder = new PoemBuilder();
 		try {
 			builder.generateTitle("title", false);
