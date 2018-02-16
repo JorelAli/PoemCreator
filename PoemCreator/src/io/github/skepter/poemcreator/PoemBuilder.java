@@ -59,6 +59,7 @@ public class PoemBuilder {
 			if(currentPoemString.isEmpty()) {
 				try {
 					currentPoemString.appendString(nextWord);
+					currentPoemString.appendString(" ");
 				} catch(PoemStringLengthException e) {
 					/* ~SPECIAL_CASE~
 					 * If this case occurs, there's a word which cannot be fit
@@ -73,12 +74,14 @@ public class PoemBuilder {
 			} else {
 				try {
 					currentPoemString.appendString(nextWord);
+					currentPoemString.appendString(" ");
 				} catch(PoemStringLengthException e) {
 					//We're now full up, let's create a new PoemString and write
 					//to our "buffer" (list)
 					addLine(currentPoemString);
 					try {
 						currentPoemString = new PoemString(nextWord);
+						currentPoemString.appendString(" ");
 					} catch (PoemStringLengthException e1) {
 						// See ~SPECIAL_CASE~ above
 						e1.printStackTrace();
