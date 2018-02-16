@@ -107,7 +107,12 @@ public class PoemCreator {
 		builder.build();
 
 		String leftColumn = builder.getResultingColumn();
-		String rightColumn = builder.getResultingColumn(); 
+		String rightColumn = builder.getResultingColumn();
+		
+		/*
+		 * Since the builder doesn't "self destruct" from the building process,
+		 * we can add methods to the builder to aid in the analysis of it
+		 */
 
 		/*
 		 * Basic idea of secret embedding:

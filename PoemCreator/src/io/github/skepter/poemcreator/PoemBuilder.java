@@ -21,24 +21,25 @@ public class PoemBuilder {
 	private boolean hasTitle;
 	private boolean hasBeenBuilt;
 	
+	//An index of what line the poem starts at (normally 6)
+	private int poemStartingIndex;
+	
 	/*
 	 * Once a poem has been created, it doesn't need to be rebuilt or
 	 * re-compiled (to its resulting form).
 	 */
 	private String cachedResult;
 	
+	private static String NEW_LINE;
+	
 	public PoemBuilder() {
 		builder = new ArrayList<>();
 		hasTitle = false;
 		hasBeenBuilt = false;
 		cachedResult = null;
-	}
-	
-	public void addNewLine() {
-		addNewLine(builder.size());
-	}
-	
-	private void addNewLine(int index) {
+		
+		setPoemStartingIndex(0);
+		
 		PoemString newline = new PoemString();
 		for(int i = 0; i < TXT_LENGTH; i++) {
 			try {
@@ -48,13 +49,29 @@ public class PoemBuilder {
 				e.printStackTrace();
 			}
 		}
-		builder.add(index, newline.toString());
+		NEW_LINE = newline.toString();
+	}
+	
+	/* New line functions */
+	
+	public void addNewLine() {
+		addNewLine(builder.size());
+	}
+	
+	private void addNewLine(int index) {
+		builder.add(index, NEW_LINE);
 	}
 	
 	private void addLine(PoemString string) {
 		builder.add(string.toString());
 	}
- 	
+	
+	public boolean isNewLine(String line) {
+		return line.replace("\n", "").equals(NEW_LINE);
+	}
+
+	/* End of new line functions */
+	
 	/**
 	 * Generates a tonne of PoemStrings and adds it to the builder. Adds a new line at the end.
 	 * @param str
@@ -112,6 +129,7 @@ public class PoemBuilder {
 	}
 	
 	/**
+	 * TODO multi-line author/titles
 	 * Author generator. Designed to be generated at the top of the poem
 	 * @param author
 	 * @throws PoemStringLengthException 
@@ -124,11 +142,13 @@ public class PoemBuilder {
 			addNewLine(3);
 			builder.add(4, authorStr.toString());
 			addNewLine(5);
+			setPoemStartingIndex(6);
 		} else {
 			// This case shouldn't occur "in production"
 			addNewLine(0);
 			builder.add(1, authorStr.toString());
 			addNewLine(2);
+			setPoemStartingIndex(3);
 		}
 	}
 	
@@ -202,5 +222,14 @@ public class PoemBuilder {
 		} else {
 			return cachedResult;
 		}
+	}
+
+	public int getPoemStartingIndex() {
+		return poemStartingIndex;
+	}
+
+	//Good grief *Rolls eyes* These setter generators...
+	private void setPoemStartingIndex(int poemStartingIndex) {
+		this.poemStartingIndex = poemStartingIndex;
 	}
 }
