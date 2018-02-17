@@ -2,10 +2,8 @@ package io.github.skepter.poemcreator;
 
 class PoemString {
 
-	StringBuilder strBuilder;
+	private StringBuilder strBuilder;
 	
-	
-
 	public PoemString() {
 		strBuilder = new StringBuilder();
 	}

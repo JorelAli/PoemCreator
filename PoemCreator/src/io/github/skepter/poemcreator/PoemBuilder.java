@@ -70,13 +70,7 @@ public class PoemBuilder {
 		builderL.add(index, NEW_LINE);
 		builderR.add(index, NEW_LINE);
 	}
-	
-	@Deprecated
-	private void addLine(PoemString string) {
-		builderL.add(string.toString());
-		builderR.add(string.toString());
-	}
-	
+		
 	private void addLineL(PoemString string) {
 		builderL.add(string.toString());
 	}
@@ -103,7 +97,7 @@ public class PoemBuilder {
 		Iterator<String> it = words.iterator();
 		
 		PoemString currentPoemStringL = new PoemString();
-		PoemString currentPoemStringR = new PoemString();
+		PoemString currentPoemStringR = new PoemString("");
 		
 		String secretWord = secretQueue.peek();
 		
@@ -118,24 +112,19 @@ public class PoemBuilder {
 			}
 			
 			//Add it to the currentPoemString as a "new string"
-			if(currentPoemStringL.isEmpty() || currentPoemStringR.isEmpty()) {
+			if(currentPoemStringL.isEmpty()) {
 				try {
 					if(addSecretWord) {
 						currentPoemStringL.appendString(" " + nextWord);
-						System.out.println(currentPoemStringL);
-						currentPoemStringR.appendString(nextWord + " KAK");
-						System.out.println(currentPoemStringR);
-						
-						//Spaces
-						currentPoemStringL.appendString(" ");
-						currentPoemStringR.appendString(" ");
+						currentPoemStringR.appendString(nextWord + " ");
 					} else {
 						currentPoemStringL.appendString(nextWord);
-						currentPoemStringL.appendString(" ");
-						
 						currentPoemStringR.appendString(nextWord);
-						currentPoemStringR.appendString(" ");
 					}
+					
+					//Spaces between words
+					currentPoemStringL.appendString(" ");						
+					currentPoemStringR.appendString(" ");
 					
 				} catch(PoemStringLengthException e) {
 					/* ~SPECIAL_CASE~
@@ -158,7 +147,8 @@ public class PoemBuilder {
 				} catch(PoemStringLengthException e) {
 					//We're now full up, let's create a new PoemString and write
 					//to our "buffer" (list)
-					addLine(currentPoemStringL);
+					addLineL(currentPoemStringL);
+					addLineR(currentPoemStringR);
 					try {
 						currentPoemStringL = new PoemString(nextWord);
 						currentPoemStringL.appendString(" ");
@@ -171,6 +161,7 @@ public class PoemBuilder {
 					}
 				}
 			}
+			
 			//Update secretWord
 			secretWord = secretQueue.peek();
 		}
@@ -181,6 +172,7 @@ public class PoemBuilder {
 		
 		//Prints a new line :)
 		addNewLine();
+				
 		return secretQueue;
 	}
 	
