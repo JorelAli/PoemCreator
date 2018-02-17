@@ -14,7 +14,8 @@ import java.util.Queue;
  */
 public class PoemBuilder {
 
-	public final static int STR_LENGTH = 29;
+	//If this value is too high, sometimes the poem secrets are unreadable
+	public final static int STR_LENGTH = 30;
 	//2 for borders, 2 for left padding, 2 for right padding
 	public final static int TXT_LENGTH = STR_LENGTH - 6;
 	
@@ -62,8 +63,9 @@ public class PoemBuilder {
 	/* New line functions */
 	
 	public void addNewLine() {
+		// Since builderL and builderR have the same size, we only need to use
+		// the size of one of the builders.
 		addNewLine(builderL.size());
-		addNewLine(builderR.size());
 	}
 	
 	private void addNewLine(int index) {
@@ -139,10 +141,16 @@ public class PoemBuilder {
 				}
 			} else {
 				try {
-					currentPoemStringL.appendString(nextWord);
-					currentPoemStringL.appendString(" ");
 					
-					currentPoemStringR.appendString(nextWord);
+					if(addSecretWord) {
+						currentPoemStringL.appendString(" " + nextWord);
+						currentPoemStringR.appendString(nextWord + " ");
+					} else {
+						currentPoemStringL.appendString(nextWord);
+						currentPoemStringR.appendString(nextWord);
+					}
+					
+					currentPoemStringL.appendString(" ");
 					currentPoemStringR.appendString(" ");
 				} catch(PoemStringLengthException e) {
 					//We're now full up, let's create a new PoemString and write
@@ -150,10 +158,16 @@ public class PoemBuilder {
 					addLineL(currentPoemStringL);
 					addLineR(currentPoemStringR);
 					try {
-						currentPoemStringL = new PoemString(nextWord);
-						currentPoemStringL.appendString(" ");
 						
-						currentPoemStringR = new PoemString(nextWord);
+						if(addSecretWord) {
+							currentPoemStringL = new PoemString(" " + nextWord);
+							currentPoemStringR = new PoemString(nextWord + " ");
+						} else {
+							currentPoemStringL = new PoemString(nextWord);
+							currentPoemStringR = new PoemString(nextWord );
+						}
+						
+						currentPoemStringL.appendString(" ");
 						currentPoemStringR.appendString(" ");
 					} catch (PoemStringLengthException e1) {
 						// See ~SPECIAL_CASE~ above
@@ -182,21 +196,28 @@ public class PoemBuilder {
 	 * @param author
 	 * @throws PoemStringLengthException 
 	 */
-	public void generateAuthor(String author) throws PoemStringLengthException {
-		PoemString authorStr = new PoemString("Created by " + author);
-		authorStr.center();
-
+	public void generateAuthor(String author, boolean showAuthor) throws PoemStringLengthException {
+		PoemString authorStrL = new PoemString("Created by " + author);
+		PoemString authorStrR = new PoemString("Created by " + author);
+		if(showAuthor) {
+			authorStrL = new PoemString(" Created by " + author);
+			authorStrR = new PoemString("Created by " + author + " ");
+		}
+		
+		authorStrL.center();
+		authorStrR.center();
+		
 		if (hasTitle) {
 			addNewLine(3);
-			builderL.add(4, authorStr.toString());
-			builderR.add(4, authorStr.toString());
+			builderL.add(4, authorStrL.toString());
+			builderR.add(4, authorStrR.toString());
 			addNewLine(5);
 			setPoemStartingIndex(6);
 		} else {
 			// This case shouldn't occur "in production"
 			addNewLine(0);
-			builderL.add(1, authorStr.toString());
-			builderR.add(1, authorStr.toString());
+			builderL.add(1, authorStrL.toString());
+			builderR.add(1, authorStrR.toString());
 			addNewLine(2);
 			setPoemStartingIndex(3);
 		}
@@ -207,7 +228,7 @@ public class PoemBuilder {
 	 * @param title
 	 * @throws PoemStringLengthException
 	 */
-	public void generateTitle(String title) throws PoemStringLengthException {
+	public void generateTitle(String title, boolean showTitle) throws PoemStringLengthException {
 		//Prevent generating the title multiple times
 		if(hasTitle) {
 			return;
@@ -228,12 +249,19 @@ public class PoemBuilder {
 		titleBlock[2] = titleFooter.toString();
 		
 		//Title itself		
-		PoemString poemString = new PoemString(title);
-		poemString.center();
-		titleBlock[1] = poemString.toString();
+		PoemString poemStringL = new PoemString(title);
+		PoemString poemStringR = new PoemString(title);
+		if(showTitle) {
+			 poemStringL = new PoemString(" " + title);
+			 poemStringR = new PoemString(title + " ");
+		}
+		poemStringL.center();
+		poemStringR.center();
 		
-		
+		titleBlock[1] = poemStringL.toString();
 		builderL.addAll(0, Arrays.asList(titleBlock));
+		
+		titleBlock[1] = poemStringR.toString();
 		builderR.addAll(0, Arrays.asList(titleBlock));
 	}
 	
@@ -298,3 +326,4 @@ public class PoemBuilder {
 		this.poemStartingIndex = poemStartingIndex;
 	}
 }
+

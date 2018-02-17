@@ -43,8 +43,8 @@ public class PoemCreator {
 //		}
 		
 		//Using the PoemCreator constructor
-		new PoemCreator("Title", false, "Jorel Ali", "This is an insanely super long abnormal string which has length of over "
-				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"This"});
+		new PoemCreator("Title", false, "Jorel Ali", true, "This is an insanely super long abnormal string which has length of over "
+				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"This", "string", "functionality"});
 			
 	}
 
@@ -59,12 +59,12 @@ public class PoemCreator {
 	 * @param body
 	 * @param secret
 	 */
-	public PoemCreator(String title, boolean showTitle, String author, String body, String[] secret) {
+	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret) {
 		PoemBuilder builder = new PoemBuilder();
 		// Title
 		try {
 			// showTitle is dealt with in this class
-			builder.generateTitle(title);
+			builder.generateTitle(title, showTitle);
 		} catch (PoemStringLengthException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,7 +73,7 @@ public class PoemCreator {
 		// Author
 		if (author != null) {
 			try {
-				builder.generateAuthor(author);
+				builder.generateAuthor(author, showAuthor);
 			} catch (PoemStringLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
