@@ -3,11 +3,13 @@ package io.github.skepter.poemcreator;
 class PoemString {
 
 	StringBuilder strBuilder;
+	
+	
 
 	public PoemString() {
 		strBuilder = new StringBuilder();
 	}
-
+	
 	public PoemString(String inputStr) throws PoemStringLengthException {
 		if (inputStr.length() > PoemBuilder.TXT_LENGTH) {
 			throw new PoemStringLengthException(inputStr);
@@ -15,6 +17,10 @@ class PoemString {
 		strBuilder = new StringBuilder(inputStr);
 	}
 
+	public void appendSpecialString(String str, String secret) throws PoemStringLengthException {
+		
+	}
+	
 	/**
 	 * Adds a string to the PoemString
 	 * 
@@ -48,11 +54,12 @@ class PoemString {
 
 	@Override
 	public String toString() {
-		for (int i = strBuilder.length(); i < PoemBuilder.TXT_LENGTH; i++) {
-			strBuilder.append(" ");
+		StringBuilder resultant = new StringBuilder(strBuilder);
+		for (int i = resultant.length(); i < PoemBuilder.TXT_LENGTH; i++) {
+			resultant.append(" ");
 		}
-		strBuilder.insert(0, "*  ");
-		strBuilder.append("  *");
-		return strBuilder.toString();
+		resultant.insert(0, "*  ");
+		resultant.append("  *");
+		return resultant.toString();
 	}
 }

@@ -105,9 +105,11 @@ public class PoemCreator {
 
 		// Poem has been created, all checks dealt with.
 		builder.build();
+		
+		builder.printResultingColumn();
 
-		String leftColumn = builder.getResultingColumn();
-		String rightColumn = builder.getResultingColumn();
+		String leftColumn = builder.getResultingColumnL();
+		String rightColumn = builder.getResultingColumnL();
 		
 		/*
 		 * Since the builder doesn't "self destruct" from the building process,
@@ -122,6 +124,8 @@ public class PoemCreator {
 		 * Deal with "dual secrets" ('the world') later.
 		 * When adding a space to each column, remove a space from * at the end of line.
 		 */
+		
+		
 		
 	}
 

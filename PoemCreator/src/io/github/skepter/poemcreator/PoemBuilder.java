@@ -16,7 +16,10 @@ public class PoemBuilder {
 	public final static int STR_LENGTH = 29;
 	//2 for borders, 2 for left padding, 2 for right padding
 	public final static int TXT_LENGTH = STR_LENGTH - 6;
-	private List<String> builder;
+	
+	//Left and right columns
+	private List<String> builderL;
+	private List<String> builderR;
 	
 	private boolean hasTitle;
 	private boolean hasBeenBuilt;
@@ -28,15 +31,18 @@ public class PoemBuilder {
 	 * Once a poem has been created, it doesn't need to be rebuilt or
 	 * re-compiled (to its resulting form).
 	 */
-	private String cachedResult;
+	private String cachedResultL;
+	private String cachedResultR;
 	
 	private static String NEW_LINE;
 	
 	public PoemBuilder() {
-		builder = new ArrayList<>();
+		builderL = new ArrayList<>();
+		builderR = new ArrayList<>();
 		hasTitle = false;
 		hasBeenBuilt = false;
-		cachedResult = null;
+		cachedResultL = null;
+		cachedResultR = null;
 		
 		setPoemStartingIndex(0);
 		
@@ -55,15 +61,18 @@ public class PoemBuilder {
 	/* New line functions */
 	
 	public void addNewLine() {
-		addNewLine(builder.size());
+		addNewLine(builderL.size());
+		addNewLine(builderR.size());
 	}
 	
 	private void addNewLine(int index) {
-		builder.add(index, NEW_LINE);
+		builderL.add(index, NEW_LINE);
+		builderR.add(index, NEW_LINE);
 	}
 	
 	private void addLine(PoemString string) {
-		builder.add(string.toString());
+		builderL.add(string.toString());
+		builderR.add(string.toString());
 	}
 	
 	public boolean isNewLine(String line) {
@@ -140,13 +149,15 @@ public class PoemBuilder {
 
 		if (hasTitle) {
 			addNewLine(3);
-			builder.add(4, authorStr.toString());
+			builderL.add(4, authorStr.toString());
+			builderR.add(4, authorStr.toString());
 			addNewLine(5);
 			setPoemStartingIndex(6);
 		} else {
 			// This case shouldn't occur "in production"
 			addNewLine(0);
-			builder.add(1, authorStr.toString());
+			builderL.add(1, authorStr.toString());
+			builderR.add(1, authorStr.toString());
 			addNewLine(2);
 			setPoemStartingIndex(3);
 		}
@@ -183,11 +194,12 @@ public class PoemBuilder {
 		titleBlock[1] = poemString.toString();
 		
 		
-		builder.addAll(0, Arrays.asList(titleBlock));
+		builderL.addAll(0, Arrays.asList(titleBlock));
+		builderR.addAll(0, Arrays.asList(titleBlock));
 	}
 	
 	public List<String> getBuilder() {
-		return builder;
+		return builderL;
 	}
 	
 	/**
@@ -204,23 +216,42 @@ public class PoemBuilder {
 		for(int i = 0; i < STR_LENGTH; i++) {
 			strBuilder.append("*");
 		}
-		builder.add(strBuilder.toString());
-		cachedResult = getResultingColumn();
+		builderL.add(strBuilder.toString());
+		builderR.add(strBuilder.toString());
+		cachedResultL = getResultingColumnL();
+		cachedResultR = getResultingColumnR();
 	}
 	
 	public void printResultingColumn() {
-		System.out.println(getResultingColumn());
+		String[] leftColumn = getResultingColumnL().split("\n");
+		String[] rightColumn = getResultingColumnR().split("\n");
+		for(int i = 0; i < leftColumn.length; i++) {
+			System.out.println(rightColumn[i] //+ " " + rightColumn[i]
+					);
+		}
 	}
 	
-	public String getResultingColumn() {
-		if(cachedResult == null) {
+	public String getResultingColumnL() {
+		if(cachedResultL == null) {
 			StringBuilder strBuilder = new StringBuilder();
-			builder.forEach(str -> {
+			builderL.forEach(str -> {
 				strBuilder.append(str + "\n");
 			});
 			return strBuilder.toString();
 		} else {
-			return cachedResult;
+			return cachedResultL;
+		}
+	}
+	
+	public String getResultingColumnR() {
+		if(cachedResultR == null) {
+			StringBuilder strBuilder = new StringBuilder();
+			builderR.forEach(str -> {
+				strBuilder.append(str + "\n");
+			});
+			return strBuilder.toString();
+		} else {
+			return cachedResultR;
 		}
 	}
 
