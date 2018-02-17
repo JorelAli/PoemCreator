@@ -1,5 +1,8 @@
 package io.github.skepter.poemcreator;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Creates poems. Stitches together the results of PoemBuilder to create 4
  * column poem results. Implements the secret.
@@ -41,7 +44,7 @@ public class PoemCreator {
 		
 		//Using the PoemCreator constructor
 		new PoemCreator("Title", false, "Jorel Ali", "This is an insanely super long abnormal string which has length of over "
-				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"has", "test"});
+				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"This"});
 			
 	}
 
@@ -76,18 +79,7 @@ public class PoemCreator {
 				e.printStackTrace();
 			}
 		}
-
-		// Implementing the body into the poem
-		String[] paragraphs = body.split("\n");
-		for (String str : paragraphs) {
-			try {
-				builder.addParagraph(str);
-			} catch (PoemStringLengthException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		
 		// Sanity check for secret embedding
 		int lastIndex = 0;
 		for (String str : secret) {
@@ -102,14 +94,41 @@ public class PoemCreator {
 				lastIndex = body.indexOf(str, lastIndex);
 			}
 		}
+		
+		/*
+		 * Convert Secret[] into a Queue Basically, I plan to implement a queue
+		 * system, where when the next available secret word is found in the
+		 * body, it will be dequeued, so you don't have to mess with indices and
+		 * stuff
+		 */
+		Queue<String> secretQueue = new LinkedList<>();
+		for(String str : secret) {
+			secretQueue.add(str);
+		}
+		
+		//secretQueue.poll();
+		
+		// Implementing the body into the poem
+		String[] paragraphs = body.split("\n");
+		for (String str : paragraphs) {
+			try {
+				//Ensures that the queue continually updates when consumed
+				secretQueue = builder.addParagraph(str, secretQueue);
+			} catch (PoemStringLengthException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		
 
 		// Poem has been created, all checks dealt with.
 		builder.build();
 		
 		builder.printResultingColumn();
-
-		String leftColumn = builder.getResultingColumnL();
-		String rightColumn = builder.getResultingColumnL();
+//
+//		String leftColumn = builder.getResultingColumnL();
+//		String rightColumn = builder.getResultingColumnL();
 		
 		/*
 		 * Since the builder doesn't "self destruct" from the building process,

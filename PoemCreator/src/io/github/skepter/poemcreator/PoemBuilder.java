@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Class for building a poem. Simple adds text to the poem.
@@ -70,8 +71,17 @@ public class PoemBuilder {
 		builderR.add(index, NEW_LINE);
 	}
 	
+	@Deprecated
 	private void addLine(PoemString string) {
 		builderL.add(string.toString());
+		builderR.add(string.toString());
+	}
+	
+	private void addLineL(PoemString string) {
+		builderL.add(string.toString());
+	}
+	
+	private void addLineR(PoemString string) {
 		builderR.add(string.toString());
 	}
 	
@@ -84,22 +94,49 @@ public class PoemBuilder {
 	/**
 	 * Generates a tonne of PoemStrings and adds it to the builder. Adds a new line at the end.
 	 * @param str
+	 * @param secretQueue 
 	 * @throws PoemStringLengthException 
 	 */
-	public void addParagraph(String str) throws PoemStringLengthException {
+	public Queue<String> addParagraph(String str, Queue<String> secretQueue) throws PoemStringLengthException {
 		
 		List<String> words = Arrays.asList(str.split(" "));
 		Iterator<String> it = words.iterator();
-		PoemString currentPoemString = new PoemString();
+		
+		PoemString currentPoemStringL = new PoemString();
+		PoemString currentPoemStringR = new PoemString();
+		
+		String secretWord = secretQueue.peek();
 		
 		//For each word in words
 		while(it.hasNext()) {
 			String nextWord = it.next();
+			boolean addSecretWord = false;
+			if(nextWord.equals(secretWord)) {
+				//Because we CAN implement it, we can remove it from the queue
+				addSecretWord = true;
+				secretQueue.poll();
+			}
+			
 			//Add it to the currentPoemString as a "new string"
-			if(currentPoemString.isEmpty()) {
+			if(currentPoemStringL.isEmpty() || currentPoemStringR.isEmpty()) {
 				try {
-					currentPoemString.appendString(nextWord);
-					currentPoemString.appendString(" ");
+					if(addSecretWord) {
+						currentPoemStringL.appendString(" " + nextWord);
+						System.out.println(currentPoemStringL);
+						currentPoemStringR.appendString(nextWord + " KAK");
+						System.out.println(currentPoemStringR);
+						
+						//Spaces
+						currentPoemStringL.appendString(" ");
+						currentPoemStringR.appendString(" ");
+					} else {
+						currentPoemStringL.appendString(nextWord);
+						currentPoemStringL.appendString(" ");
+						
+						currentPoemStringR.appendString(nextWord);
+						currentPoemStringR.appendString(" ");
+					}
+					
 				} catch(PoemStringLengthException e) {
 					/* ~SPECIAL_CASE~
 					 * If this case occurs, there's a word which cannot be fit
@@ -109,32 +146,42 @@ public class PoemBuilder {
 					 * a modified change for TXT_LENGTH, I'm just going to throw
 					 * this exception
 					 */
-					throw e;
+					e.printStackTrace();
 				}
 			} else {
 				try {
-					currentPoemString.appendString(nextWord);
-					currentPoemString.appendString(" ");
+					currentPoemStringL.appendString(nextWord);
+					currentPoemStringL.appendString(" ");
+					
+					currentPoemStringR.appendString(nextWord);
+					currentPoemStringR.appendString(" ");
 				} catch(PoemStringLengthException e) {
 					//We're now full up, let's create a new PoemString and write
 					//to our "buffer" (list)
-					addLine(currentPoemString);
+					addLine(currentPoemStringL);
 					try {
-						currentPoemString = new PoemString(nextWord);
-						currentPoemString.appendString(" ");
+						currentPoemStringL = new PoemString(nextWord);
+						currentPoemStringL.appendString(" ");
+						
+						currentPoemStringR = new PoemString(nextWord);
+						currentPoemStringR.appendString(" ");
 					} catch (PoemStringLengthException e1) {
 						// See ~SPECIAL_CASE~ above
-						throw e;
+						e.printStackTrace();
 					}
 				}
 			}
+			//Update secretWord
+			secretWord = secretQueue.peek();
 		}
-
+		
 		//Adds final poemString
-		addLine(currentPoemString);
+		addLineL(currentPoemStringL);
+		addLineR(currentPoemStringR);
 		
 		//Prints a new line :)
 		addNewLine();
+		return secretQueue;
 	}
 	
 	/**
@@ -198,10 +245,6 @@ public class PoemBuilder {
 		builderR.addAll(0, Arrays.asList(titleBlock));
 	}
 	
-	public List<String> getBuilder() {
-		return builderL;
-	}
-	
 	/**
 	 * Adds finishing line to poem
 	 */
@@ -226,8 +269,7 @@ public class PoemBuilder {
 		String[] leftColumn = getResultingColumnL().split("\n");
 		String[] rightColumn = getResultingColumnR().split("\n");
 		for(int i = 0; i < leftColumn.length; i++) {
-			System.out.println(rightColumn[i] //+ " " + rightColumn[i]
-					);
+			System.out.println(leftColumn[i] + " " + rightColumn[i]);
 		}
 	}
 	
