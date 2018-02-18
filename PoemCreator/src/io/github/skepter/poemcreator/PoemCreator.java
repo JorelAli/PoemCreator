@@ -14,6 +14,8 @@ public class PoemCreator {
 
 	//TODO GUI?
 	
+	private String result;
+	
 	public static void main(String[] a) {
 		
 		//Testing the raw PoemBuilder class
@@ -125,7 +127,10 @@ public class PoemCreator {
 		// Poem has been created, all checks dealt with.
 		builder.build();
 		
-		builder.printResultingColumns();
+		result = builder.getResultingColumns();
+		
+		
+		//builder.printResultingColumns();
 //
 //		String leftColumn = builder.getResultingColumnL();
 //		String rightColumn = builder.getResultingColumnL();
@@ -146,6 +151,10 @@ public class PoemCreator {
 		
 		
 		
+	}
+	
+	public String getResult() {
+		return result;
 	}
 
 }

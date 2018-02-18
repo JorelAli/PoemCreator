@@ -286,11 +286,17 @@ public class PoemBuilder {
 	}
 	
 	public void printResultingColumns() {
+		System.out.println(getResultingColumns());
+	}
+	
+	public String getResultingColumns() {
+		StringBuilder strBuilder = new StringBuilder();
 		String[] leftColumn = getResultingColumnL().split("\n");
 		String[] rightColumn = getResultingColumnR().split("\n");
 		for(int i = 0; i < leftColumn.length; i++) {
-			System.out.println(leftColumn[i] + " " + rightColumn[i]);
+			strBuilder.append(leftColumn[i] + " " + rightColumn[i]);
 		}
+		return strBuilder.toString();
 	}
 	
 	public String getResultingColumnL() {
