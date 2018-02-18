@@ -24,6 +24,7 @@ public class PoemBuilder {
 	private List<String> builderR;
 	
 	private boolean hasTitle;
+	private boolean hasAuthor;
 	private boolean hasBeenBuilt;
 	
 	//An index of what line the poem starts at (normally 6)
@@ -42,6 +43,7 @@ public class PoemBuilder {
 		builderL = new ArrayList<>();
 		builderR = new ArrayList<>();
 		hasTitle = false;
+		hasAuthor = false;
 		hasBeenBuilt = false;
 		cachedResultL = null;
 		cachedResultR = null;
@@ -197,6 +199,7 @@ public class PoemBuilder {
 	 * @throws PoemStringLengthException 
 	 */
 	public void generateAuthor(String author, boolean showAuthor) throws PoemStringLengthException {
+		hasAuthor = true;
 		PoemString authorStrL = new PoemString("Created by " + author);
 		PoemString authorStrR = new PoemString("Created by " + author);
 		if(showAuthor) {
@@ -270,11 +273,31 @@ public class PoemBuilder {
 	 */
 	public void build() {
 		if(hasBeenBuilt) {
-			//Has already been built, cannot rebuild
-			System.out.println("You cannot rebuild a poem"); //TODO exception?
+			// Has already been built, cannot rebuild (Then again, this will
+			// never be executed)
 			return;
 		}
 		hasBeenBuilt = true;
+		
+		//Adds spacing (gotta have that fancy formatting)
+		if(!hasAuthor) {
+			if(hasTitle) {
+				addNewLine(3);	
+			} else {
+				addNewLine(0);
+			}
+		}
+		
+		//Add top line if no title has been supplied
+		if(!hasTitle) {
+			StringBuilder titleHeader = new StringBuilder("/");
+			for(int i = 0; i < STR_LENGTH - 1; i++) {
+				titleHeader.append("*");
+			}
+			builderL.add(0, titleHeader.toString());
+			builderR.add(0, titleHeader.toString());
+		}
+		
 		StringBuilder strBuilder = new StringBuilder("");
 		for(int i = 0; i < STR_LENGTH; i++) {
 			strBuilder.append("*");
@@ -284,10 +307,6 @@ public class PoemBuilder {
 		cachedResultL = getResultingColumnL();
 		cachedResultR = getResultingColumnR();
 	}
-	
-//	public void printResultingColumns() {
-//		System.out.println(getResultingColumns());
-//	}
 	
 	public String getResultingColumns(boolean fourColumnMode) {
 		StringBuilder strBuilder = new StringBuilder();

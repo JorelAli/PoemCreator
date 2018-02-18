@@ -33,12 +33,14 @@ public class PoemCreator {
 	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret, boolean fourColumnMode) {
 		PoemBuilder builder = new PoemBuilder();
 		// Title
-		try {
-			// showTitle is dealt with in this class
-			builder.generateTitle(title, showTitle);
-		} catch (PoemStringLengthException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(title != null) {
+			try {
+				// showTitle is dealt with in this class
+				builder.generateTitle(title, showTitle);
+			} catch (PoemStringLengthException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		// Author

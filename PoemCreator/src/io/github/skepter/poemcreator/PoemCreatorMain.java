@@ -171,6 +171,9 @@ public class PoemCreatorMain {
 		makePoem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String title = titleField.getText();
+				if(title.equals("")) {
+					title = null;
+				}
 				boolean showTitle = showTitleBox.isSelected();
 				String author = authorField.getText();
 				if(author.equals("")) {
