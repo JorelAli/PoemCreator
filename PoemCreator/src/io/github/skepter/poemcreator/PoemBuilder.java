@@ -112,7 +112,8 @@ public class PoemBuilder {
 			if(nextWord.equals(secretWord)) {
 				//Because we CAN implement it, we can remove it from the queue
 				addSecretWord = true;
-				secretQueue.poll();
+				secretQueue.poll(); //TODO Make sure it actually pops off the word at the end
+				//
 			}
 			
 			//Add it to the currentPoemString as a "new string"
@@ -152,11 +153,20 @@ public class PoemBuilder {
 						currentPoemStringR.appendString(nextWord);
 					}
 					
-					currentPoemStringL.appendString(" ");
-					currentPoemStringR.appendString(" ");
+					//Deal with this case specifically - if this is the cause of the exception, then just continue with new line
+					//?
+					try {
+						currentPoemStringL.appendString(" ");
+						currentPoemStringR.appendString(" ");
+					} catch(PoemStringLengthException e) {
+						//ignore
+					}
+					
 				} catch(PoemStringLengthException e) {
 					//We're now full up, let's create a new PoemString and write
 					//to our "buffer" (list)
+					
+					//TODO Fix bug with duplicate words here?
 					addLineL(currentPoemStringL);
 					addLineR(currentPoemStringR);
 					try {
