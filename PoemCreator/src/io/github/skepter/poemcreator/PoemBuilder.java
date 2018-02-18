@@ -14,9 +14,16 @@ import java.util.Queue;
  */
 public class PoemBuilder {
 
-	//If this value is too high, sometimes the poem secrets are unreadable
+	//If this value is too high, the poem can become unreadable
+	/**
+	 * The maximum length of characters in a column (including border)
+	 */
 	public final static int STR_LENGTH = 30;
 	//2 for borders, 2 for left padding, 2 for right padding
+	
+	/**
+	 * The maximum length of text on a PoemString/row
+	 */
 	public final static int TXT_LENGTH = STR_LENGTH - 6;
 	
 	//Left and right columns
