@@ -24,6 +24,8 @@ import javax.swing.border.TitledBorder;
 
 public class PoemCreatorMain {
 
+	//TODO: Justified text formatting for better disguised effect
+	
 	private JFrame frmJorelsPoemCreator;
 	private JTextField titleField;
 	private JTextField authorField;
