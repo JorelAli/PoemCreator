@@ -285,7 +285,7 @@ public class PoemBuilder {
 		cachedResultR = getResultingColumnR();
 	}
 	
-	public void printResultingColumn() {
+	public void printResultingColumns() {
 		String[] leftColumn = getResultingColumnL().split("\n");
 		String[] rightColumn = getResultingColumnR().split("\n");
 		for(int i = 0; i < leftColumn.length; i++) {

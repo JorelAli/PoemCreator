@@ -125,7 +125,7 @@ public class PoemCreator {
 		// Poem has been created, all checks dealt with.
 		builder.build();
 		
-		builder.printResultingColumn();
+		builder.printResultingColumns();
 //
 //		String leftColumn = builder.getResultingColumnL();
 //		String rightColumn = builder.getResultingColumnL();
