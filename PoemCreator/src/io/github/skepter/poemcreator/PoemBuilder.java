@@ -139,7 +139,7 @@ public class PoemBuilder {
 					 * a modified change for TXT_LENGTH, I'm just going to throw
 					 * this exception
 					 */
-					e.printStackTrace();
+					throw e;
 				}
 			} else {
 				try {
@@ -173,7 +173,7 @@ public class PoemBuilder {
 						currentPoemStringR.appendString(" ");
 					} catch (PoemStringLengthException e1) {
 						// See ~SPECIAL_CASE~ above
-						e.printStackTrace();
+						throw e1;
 					}
 				}
 			}

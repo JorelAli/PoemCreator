@@ -3,6 +3,8 @@ package io.github.skepter.poemcreator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.swing.JOptionPane;
+
 /**
  * Creates poems. Stitches together the results of PoemBuilder to create 4
  * column poem results. Implements the secret.
@@ -38,8 +40,8 @@ public class PoemCreator {
 				// showTitle is dealt with in this class
 				builder.generateTitle(title, showTitle);
 			} catch (PoemStringLengthException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Title '" + e.getErrorString() + "' is too long!", "Poem Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 
@@ -48,8 +50,8 @@ public class PoemCreator {
 			try {
 				builder.generateAuthor(author, showAuthor);
 			} catch (PoemStringLengthException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Author name '" + e.getErrorString() + "' is too long!", "Poem Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 		
@@ -57,12 +59,8 @@ public class PoemCreator {
 		int lastIndex = 0;
 		for (String str : secret) {
 			if (body.indexOf(str, lastIndex) == -1) {
-				try {
-					throw new SecretSanityException(str, lastIndex);
-				} catch (SecretSanityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				JOptionPane.showMessageDialog(null, "3D word '" + str + "' wasn't detected in your poem!", "Poem Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			} else {
 				lastIndex = body.indexOf(str, lastIndex);
 			}
@@ -88,8 +86,8 @@ public class PoemCreator {
 				//Ensures that the queue continually updates when consumed
 				secretQueue = builder.addParagraph(str, secretQueue);
 			} catch (PoemStringLengthException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "'" + e.getErrorString() + "' is too long for the poem!", "Poem Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 
