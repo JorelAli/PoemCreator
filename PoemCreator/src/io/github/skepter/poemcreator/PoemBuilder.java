@@ -285,16 +285,20 @@ public class PoemBuilder {
 		cachedResultR = getResultingColumnR();
 	}
 	
-	public void printResultingColumns() {
-		System.out.println(getResultingColumns());
-	}
+//	public void printResultingColumns() {
+//		System.out.println(getResultingColumns());
+//	}
 	
-	public String getResultingColumns() {
+	public String getResultingColumns(boolean fourColumnMode) {
 		StringBuilder strBuilder = new StringBuilder();
 		String[] leftColumn = getResultingColumnL().split("\n");
 		String[] rightColumn = getResultingColumnR().split("\n");
 		for(int i = 0; i < leftColumn.length; i++) {
-			strBuilder.append(leftColumn[i] + " " + rightColumn[i] + "\n");
+			if(fourColumnMode) {
+				strBuilder.append(leftColumn[i] + " " + leftColumn[i] + " " + rightColumn[i] + " " + rightColumn[i] + "\n");	
+			} else {
+				strBuilder.append(leftColumn[i] + " " + rightColumn[i] + "\n");	
+			}
 		}
 		return strBuilder.toString();
 	}

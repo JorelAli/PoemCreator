@@ -12,43 +12,8 @@ import java.util.Queue;
  */
 public class PoemCreator {
 
-	//TODO GUI?
-	
 	private String result;
 	
-	public static void main(String[] a) {
-		
-		//Testing the raw PoemBuilder class
-//		PoemBuilder builder = new PoemBuilder();
-//		try {
-//			//Tests title generation
-//			builder.generateTitle("title");
-//
-//			//Adds a basic paragraph
-//			builder.addParagraph("This is an insanely super long abnormal string which has length of over "
-//					+ "twenty nine characters just to test the functionality of my paragraph function");
-//
-//			//Tests insane long word
-//			try {
-//				builder.addParagraph("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-//			} catch (PoemStringLengthException e) {
-//				//Ignore, this is just a test
-//				System.out.println("Long word exception caught\n");
-//			}
-//			
-//			//Test author generation
-//			builder.generateAuthor("Jorel Ali");
-//			builder.build();
-//			builder.printResultingColumn();
-//		} catch (PoemStringLengthException e) {
-//			e.printStackTrace();
-//		}
-		
-		//Using the PoemCreator constructor
-		new PoemCreator("Title", false, "Jorel Ali", true, "This is an insanely super long abnormal string which has length of over "
-				+ "twenty nine characters just to test the functionality of my paragraph function", new String[] {"This", "string", "functionality"});
-			
-	}
 
 	/**
 	 * Creates a poem. All sanity checks are produced during "production" (this
@@ -60,8 +25,12 @@ public class PoemCreator {
 	 *            If null, author won't be generated
 	 * @param body
 	 * @param secret
+	 * @param fourColumns
+	 *            If using 4 column mode, it will generate 4 columns as opposed
+	 *            to two columns. Sometimes, 4 columns is easier to view than 2
+	 *            due to overlapping columns
 	 */
-	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret) {
+	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret, boolean fourColumnMode) {
 		PoemBuilder builder = new PoemBuilder();
 		// Title
 		try {
@@ -122,23 +91,11 @@ public class PoemCreator {
 			}
 		}
 
-		
-
 		// Poem has been created, all checks dealt with.
 		builder.build();
 		
-		result = builder.getResultingColumns();
+		result = builder.getResultingColumns(fourColumnMode);
 		
-		
-		//builder.printResultingColumns();
-//
-//		String leftColumn = builder.getResultingColumnL();
-//		String rightColumn = builder.getResultingColumnL();
-		
-		/*
-		 * Since the builder doesn't "self destruct" from the building process,
-		 * we can add methods to the builder to aid in the analysis of it
-		 */
 
 		/*
 		 * Basic idea of secret embedding:
@@ -148,8 +105,6 @@ public class PoemCreator {
 		 * Deal with "dual secrets" ('the world') later.
 		 * When adding a space to each column, remove a space from * at the end of line.
 		 */
-		
-		
 		
 	}
 	

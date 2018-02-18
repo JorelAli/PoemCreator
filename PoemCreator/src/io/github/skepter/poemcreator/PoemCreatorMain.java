@@ -7,7 +7,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -79,12 +78,12 @@ public class PoemCreatorMain {
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		
@@ -166,6 +165,8 @@ public class PoemCreatorMain {
 		);
 		scrollPane.setViewportView(bodyTextArea);
 		
+		JCheckBox fourColumns = new JCheckBox("Generate 4 column poem (as opposed to 2 columns)");
+		
 		JButton makePoem = new JButton("GENERATE POEM");
 		makePoem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,14 +179,15 @@ public class PoemCreatorMain {
 				boolean showAuthor = showAuthorBox.isSelected();
 				String body = bodyTextArea.getText();
 				String[] secret = secretList.getText().split(" ");
+				boolean fourColumnMode = fourColumns.isSelected();
 				
-				System.out.println(Arrays.deepToString(secret));
-				PoemCreator creator = new PoemCreator(title, showTitle, author, showAuthor, body, secret);
+				PoemCreator creator = new PoemCreator(title, showTitle, author, showAuthor, body, secret, fourColumnMode);
 				
 				output.setText(creator.getResult());
 				
 			}
 		});
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -209,7 +211,8 @@ public class PoemCreatorMain {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblNewLabel_2)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(secretList, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))
+							.addComponent(secretList, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
+						.addComponent(fourColumns))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -231,7 +234,9 @@ public class PoemCreatorMain {
 						.addComponent(secretList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_2))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(makePoem, GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+					.addComponent(fourColumns)
+					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+					.addComponent(makePoem)
 					.addContainerGap())
 		);
 		
