@@ -294,7 +294,7 @@ public class PoemBuilder {
 		String[] leftColumn = getResultingColumnL().split("\n");
 		String[] rightColumn = getResultingColumnR().split("\n");
 		for(int i = 0; i < leftColumn.length; i++) {
-			strBuilder.append(leftColumn[i] + " " + rightColumn[i]);
+			strBuilder.append(leftColumn[i] + " " + rightColumn[i] + "\n");
 		}
 		return strBuilder.toString();
 	}

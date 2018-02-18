@@ -7,6 +7,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -177,6 +178,8 @@ public class PoemCreatorMain {
 				boolean showAuthor = showAuthorBox.isSelected();
 				String body = bodyTextArea.getText();
 				String[] secret = secretList.getText().split(" ");
+				
+				System.out.println(Arrays.deepToString(secret));
 				PoemCreator creator = new PoemCreator(title, showTitle, author, showAuthor, body, secret);
 				
 				output.setText(creator.getResult());
