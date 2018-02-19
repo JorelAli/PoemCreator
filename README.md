@@ -19,6 +19,7 @@ The PoemCreator is a program I wrote which utilises the 3D property of [stereogr
 * Check the _Show Title in 3D_ box to show the title in 3D
 * Check the _Show Author in 3D_ box to show the author's name in 3D
 * Check the _Generate 4 column poem (as opposed to 2 columns)_ box to display four columns in the poem output. This still adds the words in the center column when viewed, but for inexperienced viewers, this can be more preferable.
+* Check the _Use justification_ box to enable justification. See below for more information on justification.
 
 ## Justification (v2.0 onwards)
 Version 2.0 of the PoemCreator introduces a feature called "justification". This justifies the text (as best as possible) to help disguise words better (without justification, it may be easy to see which words have extra spaces between them, making them stand out without even viewing it as a stereogram).
