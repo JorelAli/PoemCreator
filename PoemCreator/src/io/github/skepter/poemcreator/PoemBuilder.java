@@ -46,7 +46,9 @@ public class PoemBuilder {
 	
 	private static String NEW_LINE;
 	
-	public PoemBuilder() {
+	private boolean justified;
+	
+	public PoemBuilder(boolean justified) {
 		builderL = new ArrayList<>();
 		builderR = new ArrayList<>();
 		hasTitle = false;
@@ -54,6 +56,7 @@ public class PoemBuilder {
 		hasBeenBuilt = false;
 		cachedResultL = null;
 		cachedResultR = null;
+		this.justified = justified;
 		
 		setPoemStartingIndex(0);
 		
@@ -66,7 +69,7 @@ public class PoemBuilder {
 				e.printStackTrace();
 			}
 		}
-		NEW_LINE = newline.toString();
+		NEW_LINE = newline.toString(justified);
 	}
 	
 	/* New line functions */
@@ -83,11 +86,11 @@ public class PoemBuilder {
 	}
 		
 	private void addLineL(PoemString string) {
-		builderL.add(string.toString());
+		builderL.add(string.toString(justified));
 	}
 	
 	private void addLineR(PoemString string) {
-		builderR.add(string.toString());
+		builderR.add(string.toString(justified));
 	}
 	
 	public boolean isNewLine(String line) {
@@ -229,15 +232,15 @@ public class PoemBuilder {
 		
 		if (hasTitle) {
 			addNewLine(3);
-			builderL.add(4, authorStrL.toString());
-			builderR.add(4, authorStrR.toString());
+			builderL.add(4, authorStrL.toString(justified));
+			builderR.add(4, authorStrR.toString(justified));
 			addNewLine(5);
 			setPoemStartingIndex(6);
 		} else {
 			// This case shouldn't occur "in production"
 			addNewLine(0);
-			builderL.add(1, authorStrL.toString());
-			builderR.add(1, authorStrR.toString());
+			builderL.add(1, authorStrL.toString(justified));
+			builderR.add(1, authorStrR.toString(justified));
 			addNewLine(2);
 			setPoemStartingIndex(3);
 		}
@@ -278,10 +281,10 @@ public class PoemBuilder {
 		poemStringL.center();
 		poemStringR.center();
 		
-		titleBlock[1] = poemStringL.toString();
+		titleBlock[1] = poemStringL.toString(justified);
 		builderL.addAll(0, Arrays.asList(titleBlock));
 		
-		titleBlock[1] = poemStringR.toString();
+		titleBlock[1] = poemStringR.toString(justified);
 		builderR.addAll(0, Arrays.asList(titleBlock));
 	}
 	

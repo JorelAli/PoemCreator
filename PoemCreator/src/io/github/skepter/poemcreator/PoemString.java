@@ -1,18 +1,6 @@
 package io.github.skepter.poemcreator;
 
 class PoemString {
-
-	//Testing justification
-	public static void main(String[] a) {
-		PoemString aa = new PoemString();
-		try {
-			aa.appendString("hello world how");
-		} catch (PoemStringLengthException e) {
-			e.printStackTrace();
-		}
-		aa.justify();
-		System.out.println(aa);
-	}
 	
 	private StringBuilder strBuilder;
 	
@@ -25,10 +13,6 @@ class PoemString {
 			throw new PoemStringLengthException(inputStr);
 		}
 		strBuilder = new StringBuilder(inputStr);
-	}
-
-	public void appendSpecialString(String str, String secret) throws PoemStringLengthException {
-		
 	}
 	
 	/**
@@ -62,7 +46,7 @@ class PoemString {
 	 * "Justification algorithm" found from this forum post:
 	 * https://forums.anandtech.com/threads/java-full-justify-text-algorithm.1001858/#post-6839800
 	 * 
-	 * 1. Take the total collumn space of each line which is equal to the number
+	 * 1. Take the total column space of each line which is equal to the number
 	 * of characters that will fit on a line. 
 	 * 
 	 * 2. Minus the number of characters
@@ -80,18 +64,68 @@ class PoemString {
 		int r = columnSpace - numCharacters;
 		int numWordsMinusOne = strBuilder.toString().split(" ").length - 1;
 		
+		//Prevent division by 0
+		if(numWordsMinusOne == 0) {
+			return;
+		}
+		
 		int spaces = r / numWordsMinusOne;
 		
-		//TODO implement this justification
-		System.out.println(spaces);
+		//Personal preference: 5 or more spaces in the middle looks weird
+		if(spaces >= 5) {
+			return;
+		}
+		
+		String strBuilderResult = strBuilder.toString();
+		
+		//Remove excess whitespace at the end
+		strBuilderResult = strBuilderResult.trim();
+		
+		//Generate a string with the number of spaces
+		StringBuilder spacesBuilder = new StringBuilder();
+		for(int i = 0; i < spaces; i++) {
+			spacesBuilder.append(" ");
+		}
+		
+		//Incorporate the spaces
+		strBuilderResult = strBuilderResult.replace(" ", spacesBuilder.toString());
+		
+		/*
+		 * This produces unreliable results where certain words lose their 3D
+		 * effect. This is due to left/right columns not retaining their
+		 * differences if the word is at the end.
+		 * 
+		 * (Also, the end result doesn't look as good)
+		 */
+		
+//		//If the length isn't maximal, adjust the last word to make it so
+//		if(strBuilderResult.length() < columnSpace && numWordsMinusOne != 0) {
+//			int spacesToAddToEnd = columnSpace - strBuilderResult.length();
+//			
+//			StringBuilder spacesEndBuilder = new StringBuilder();
+//			for(int i = 0; i < spacesToAddToEnd; i++) {
+//				spacesEndBuilder.append(" ");
+//			}
+//			
+//			int lastSpaceIndex = strBuilderResult.trim().lastIndexOf(" ");
+//			if(lastSpaceIndex != -1) {
+//				StringBuilder result = new StringBuilder(strBuilderResult);
+//				result.insert(lastSpaceIndex, spacesEndBuilder.toString());
+//				strBuilderResult = result.toString();
+//			}
+//		}
+		
+		strBuilder = new StringBuilder(strBuilderResult);
 	}
 	
 	public boolean isEmpty() {
 		return strBuilder.length() == 0;
 	}
 
-	@Override
-	public String toString() {
+	public String toString(boolean justified) {
+		if(justified) {
+			justify();
+		}
 		StringBuilder resultant = new StringBuilder(strBuilder);
 		for (int i = resultant.length(); i < PoemBuilder.TXT_LENGTH; i++) {
 			resultant.append(" ");

@@ -59,7 +59,7 @@ public class PoemCreatorMain {
 	private void initialize() {
 		frmJorelsPoemCreator = new JFrame();
 		frmJorelsPoemCreator.setTitle("Jorel's Poem Creator");
-		frmJorelsPoemCreator.setBounds(100, 100, 450, 623);
+		frmJorelsPoemCreator.setBounds(100, 100, 480, 680);
 		frmJorelsPoemCreator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
@@ -167,6 +167,8 @@ public class PoemCreatorMain {
 		
 		JCheckBox fourColumns = new JCheckBox("Generate 4 column poem (as opposed to 2 columns)");
 		
+		JCheckBox justified = new JCheckBox("<html><p>Use justification (can produce odd \"height\" words, but improves how well the words are hidden)</p></html>");
+		
 		JButton makePoem = new JButton("GENERATE POEM");
 		makePoem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,13 +185,16 @@ public class PoemCreatorMain {
 				String body = bodyTextArea.getText();
 				String[] secret = secretList.getText().split(" ");
 				boolean fourColumnMode = fourColumns.isSelected();
+				boolean isJustified = justified.isSelected(); 
 				
-				PoemCreator creator = new PoemCreator(title, showTitle, author, showAuthor, body, secret, fourColumnMode);
+				
+				PoemCreator creator = new PoemCreator(title, showTitle, author, showAuthor, body, secret, fourColumnMode, isJustified);
 				
 				output.setText(creator.getResult());
 				
 			}
 		});
+		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -197,16 +202,16 @@ public class PoemCreatorMain {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(makePoem, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+						.addComponent(justified, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNewLabel_1)
 								.addComponent(lblNewLabel))
 							.addGap(18)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(titleField, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-								.addComponent(authorField, GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+								.addComponent(titleField, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+								.addComponent(authorField, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE))
 							.addGap(18)
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(showTitleBox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,8 +219,9 @@ public class PoemCreatorMain {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblNewLabel_2)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(secretList, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
-						.addComponent(fourColumns))
+							.addComponent(secretList, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
+						.addComponent(fourColumns)
+						.addComponent(makePoem, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -238,7 +244,9 @@ public class PoemCreatorMain {
 						.addComponent(lblNewLabel_2))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(fourColumns)
-					.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+					.addComponent(justified, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(13)
 					.addComponent(makePoem)
 					.addContainerGap())
 		);

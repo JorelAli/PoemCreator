@@ -32,8 +32,8 @@ public class PoemCreator {
 	 *            to two columns. Sometimes, 4 columns is easier to view than 2
 	 *            due to overlapping columns
 	 */
-	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret, boolean fourColumnMode) {
-		PoemBuilder builder = new PoemBuilder();
+	public PoemCreator(String title, boolean showTitle, String author, boolean showAuthor, String body, String[] secret, boolean fourColumnMode, boolean justified) {
+		PoemBuilder builder = new PoemBuilder(justified);
 		// Title
 		if(title != null) {
 			try {
